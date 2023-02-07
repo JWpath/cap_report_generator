@@ -64,7 +64,6 @@ def main():
     
     cap = docx.Document("ColoRectal_4.2.0.2.REL_CAPCP.docx")
     
-    
     reformat_margin(cap.paragraphs, flag = "MARGINS")
     
     caplist = excise_template_gutshot(cap, start = "SPECIMEN", end = "Explanatory Notes", 
