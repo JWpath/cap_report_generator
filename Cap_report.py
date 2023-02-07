@@ -60,15 +60,12 @@ class Section:
 
 def main():
     
-    print("Testing a new branch for version control!")
-    
     cap = docx.Document("ColoRectal_4.2.0.2.REL_CAPCP.docx")
     
     reformat_margin(cap.paragraphs, flag = "MARGINS")
     
     caplist = excise_template_gutshot(cap, start = "SPECIMEN", end = "Explanatory Notes", 
                                        gutshot_start = "MARGINS", gutshot_end = "+Margin Comment") 
-    
     
     remove_list = ["Cannot be determined",
                    "Other (specify)",
