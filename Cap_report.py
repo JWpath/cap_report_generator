@@ -59,6 +59,9 @@ class Section:
                 yield cls(head, choice)
 
 def main():
+    
+    print("Testing a new branch for version control!")
+    
     cap = docx.Document("ColoRectal_4.2.0.2.REL_CAPCP.docx")
     
     
