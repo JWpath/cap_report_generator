@@ -59,7 +59,6 @@ class Section:
                 yield cls(head, choice)
 
 def main():
-    
     cap = docx.Document("ColoRectal_4.2.0.2.REL_CAPCP.docx")
     
     
