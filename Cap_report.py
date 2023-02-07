@@ -50,7 +50,7 @@ class Section:
             #if matches choice regex, append to choice list [SOLVED]
                 for j, paragraph in enumerate(paragraphs_list[i+1:]) : 
                     #print(paragraph.text)
-                    if choicematch := re.search(r"^_+([a-zA-Z0-9 ,.'()/\\?!]+):?.*$", paragraph.text) : 
+                    if choicematch := re.search(r"^_+([a-zA-Z0-9 ,.'\-()\/\\?!]+):?.*$", paragraph.text) : 
                         #print(i, choicematch.group(1), type(choicematch.group(1)))
                         #!Add j+1 to start menu at 1 and not at 0, which is reserved for the N/a option
                         choice.update({j+1:choicematch.group(1)})
@@ -68,7 +68,6 @@ def main():
     caplist = excise_template_gutshot(cap, start = "SPECIMEN", end = "Explanatory Notes", 
                                        gutshot_start = "MARGINS", gutshot_end = "+Margin Comment") 
     
-    
     remove_list = ["Cannot be determined",
                    "Other (specify)",
                    "Not specified",
@@ -79,10 +78,10 @@ def main():
                    "Exact distance in",
                    "Greater than",
                    "Specify in",
-                   "Reporting of pT, pN, and (when applicable) pM "]
+                   "Reporting of pT, pN, and (when applicable) pM"]
     for i in remove_list :
         remove_paragraphs(caplist, phrase = i)
-    
+        
     #TODO : Setup a function to do this
     #Remove capital headings +- ()
     #! DO NOT EXECUTE THIS BEFORE REFORMATTING MARGINS
@@ -116,14 +115,20 @@ def main():
             paragraph.text = re.sub(r"\(specify.*\)", "", paragraph.text)
     #Generator object
     #create a list of sections : [section0, section 1, section 2]
+    
+    # captest = docx.Document()
+    # teststyle = new_paragraph_style(captest, stylename = "teststyle")
+    
+    # captest.save("cap_colon_test_tumor.docx")
+    
     capsection = list(Section.get_section(caplist))
 
     cap = docx.Document()
     capstyle = new_paragraph_style(cap, stylename = "capstyle")
 
     for n in capsection :
-        #print(n.head)
-        #print(n.choice)
+        # print(n.head)
+        # print(n.choice)
         
         while True :
             try :
