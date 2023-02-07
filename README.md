@@ -10,8 +10,8 @@ this script is only a tool to assist in surgical pathology report writing. It is
 
 # To-do
 
-> ## Webscraping
+## Webscraping
 Access CAP report templates directly from CAP website rather than local files.
 
-> ## Report formatting
+## Report formatting
 Format output that reporting elements are placed in a more logical order.
