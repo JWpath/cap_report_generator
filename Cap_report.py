@@ -64,11 +64,7 @@ def main():
     
     cap = docx.Document("ColoRectal_4.2.0.2.REL_CAPCP.docx")
     
-<<<<<<< HEAD
-    reformat_margin(cap.paragraphs, flag = "MARGINS")
-=======
     reformat(cap.paragraphs, flag = "MARGINS")
->>>>>>> git_test
     
     caplist = excise_template_gutshot(cap, start = "SPECIMEN", end = "Explanatory Notes", 
                                        gutshot_start = "MARGINS", gutshot_end = "+Margin Comment") 
