@@ -22,22 +22,24 @@ class Section:
     end of defined by either empty string, or another head or a optionhead
     
     Example : Margins = Section(headtext, choice list)
+    
+    We use this so that we can prompt a user to choose a choice for every header
      
     """
 
     def __init__(self, head, choice, optionhead = None, optionchoice = None):
         self.head = head
-        self.choice = choice #list
-        
-        ### Trying to implement optiobnheads
-        self.optionhead = optionhead 
-        self.optionchoice = optionchoice
-        
+        self.choice = choice #dictionary        
         
     @classmethod
     #Create section without instantiating a section object first
     
     def get_section(cls, paragraphs_list) :
+    
+        """
+        Input : paragraph list composed headers followed by a list of choices for every header
+        Output : generates "Section" objects from list
+        """
         
         for i, paragraph in enumerate(paragraphs_list) :
             
@@ -62,13 +64,18 @@ def main():
     
     cap = docx.Document("ColoRectal_4.2.0.2.REL_CAPCP.docx")
     
+<<<<<<< HEAD
     reformat_margin(cap.paragraphs, flag = "MARGINS")
+=======
+    reformat(cap.paragraphs, flag = "MARGINS")
+>>>>>>> git_test
     
     caplist = excise_template_gutshot(cap, start = "SPECIMEN", end = "Explanatory Notes", 
                                        gutshot_start = "MARGINS", gutshot_end = "+Margin Comment") 
     
     remove_list = ["Cannot be determined",
                    "Other (specify)",
+                   "Other :",
                    "Not specified",
                    "Not applicable",
                    "Comment",
@@ -77,7 +84,11 @@ def main():
                    "Exact distance in",
                    "Greater than",
                    "Specify in",
-                   "Reporting of pT, pN, and (when applicable) pM"]
+                   "Reporting of pT, pN, and (when applicable) pM",
+                   "pT4: Tumor invades the visceral peritoneum",
+                   "pN2: Four or more regional nodes are positive",
+                   "pM Category (required only if confirmed pathologically)"
+                   ]
     for i in remove_list :
         remove_paragraphs(caplist, phrase = i)
         
@@ -143,7 +154,7 @@ def main():
             cap.add_paragraph(f"{n.head} : {n.choice[a]}", capstyle)
         cap.save("cap_colon_out.docx")
 
-def reformat_margin (paragraphs, flag = "MARGINS") :
+def reformat(paragraphs, flag = "MARGINS") :
     #! Must be performed on a paragraph list in a docx.Document() and not an empty list
     for i, paragraph in enumerate(paragraphs) : 
         if paragraphs[i].text.startswith(str(flag)) : 
@@ -275,19 +286,16 @@ def remove_paragraphs(p, phrase = None) :
     if phrase == None :
         raise ValueError("Input string to remove paragraphs containing that string")
     else : 
-        for paragraph in p :
+        for paragraph in reversed(p) : #when removing items from a list, always iterate backwards
             #https://stackoverflow.com/questions/6930982/how-to-use-a-variable-inside-a-regular-expression
             #explanation on inserting variables into regular expressions
             if re.search(rf".*{re.escape(str(phrase))}.*", paragraph.text, re.IGNORECASE) :
                 p.remove(paragraph)
         return p
 
-
 def to_add () :
     ...
     
-    
-
 if __name__ == "__main__" :
     main()
     
