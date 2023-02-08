@@ -99,7 +99,7 @@ def main():
     for paragraph in reversed(caplist) :    
         if re.search(r"^#+\s.+$", paragraph.text) :
              caplist.remove(paragraph)
-    #TODO : Setup function to do this         
+                  
     # Remove `(Note )`
     for paragraph in reversed(caplist) :    
         if matches := (re.search(r"^.+(\(Note.*\)).*$", paragraph.text)) : # if matches note
@@ -118,14 +118,7 @@ def main():
     # Remove `(specify)`        
     for paragraph in reversed(caplist) :    
         if matches := (re.search(r"^.+(\(specify.*\)).*$", paragraph.text)) : # if matches 
-            paragraph.text = re.sub(r"\(specify.*\)", "", paragraph.text)
-    #Generator object
-    #create a list of sections : [section0, section 1, section 2]
-    
-    # captest = docx.Document()
-    # teststyle = new_paragraph_style(captest, stylename = "teststyle")
-    
-    # captest.save("cap_colon_test_tumor.docx")
+            paragraph.text = re.sub(r"\(specify.*\)", "", paragraph.text)=
     
     capsection = list(Section.get_section(caplist))
 
