@@ -46,16 +46,15 @@ class Section:
             #if matches header regex, set as header [SOLVED]
             if headmatch := re.search(r"^((?:\+?[A-Z]?[a-z0-9 ]+)+).*$", paragraphs_list[i].text) :
                 head = headmatch.group(1)
-                #!Every choice will have an N/A option
-                choice = {0: "N/A"}
-                   
+                #!Every choice will have an N/A option and a manual input option
+                choice = {0: "N/A", 1: "Manual input"}
             #if matches choice regex, append to choice list [SOLVED]
                 for j, paragraph in enumerate(paragraphs_list[i+1:]) : 
                     #print(paragraph.text)
-                    if choicematch := re.search(r"^_+([a-zA-Z0-9 ,.'\-()\/\\?!]+):?.*$", paragraph.text) : 
+                    if choicematch := re.search(r"^_+([a-zA-Z0-9 ,.'‘’\-\+\*\=()\/\\?!_]+):?.*$", paragraph.text) : 
                         #print(i, choicematch.group(1), type(choicematch.group(1)))
-                        #!Add j+1 to start menu at 1 and not at 0, which is reserved for the N/a option
-                        choice.update({j+1:choicematch.group(1)})
+                        #!Add j+2 to start menu at 2 and not at 0, which is reserved for the N/A option and manual input option
+                        choice.update({j+2:choicematch.group(1)})
                     else :
                         break       
                 yield cls(head, choice)
@@ -83,7 +82,8 @@ def main():
                    "Reporting of pT, pN, and (when applicable) pM",
                    "pT4: Tumor invades the visceral peritoneum",
                    "pN2: Four or more regional nodes are positive",
-                   "pM Category (required only if confirmed pathologically)"
+                   "pM Category (required only if confirmed pathologically)",
+                   "+Additional Dimension in Centimeters (cm):"
                    ]
     for i in remove_list :
         remove_paragraphs(caplist, phrase = i)
@@ -118,7 +118,7 @@ def main():
     # Remove `(specify)`        
     for paragraph in reversed(caplist) :    
         if matches := (re.search(r"^.+(\(specify.*\)).*$", paragraph.text)) : # if matches 
-            paragraph.text = re.sub(r"\(specify.*\)", "", paragraph.text)=
+            paragraph.text = re.sub(r"\(specify.*\)", "", paragraph.text)
     
     capsection = list(Section.get_section(caplist))
 
@@ -140,7 +140,12 @@ def main():
                 print("Not a valid choice from available menu")
     
         if a != 0 :
-            cap.add_paragraph(f"{n.head} : {n.choice[a]}", capstyle)
+            if a == 1 : 
+                userinput = input("Enter text: ")
+                cap.add_paragraph(f"{n.head} : {userinput}", capstyle)
+            else : 
+                cap.add_paragraph(f"{n.head} : {n.choice[a].replace('+', '')}", capstyle)
+        
         cap.save("cap_colon_out.docx")
 
 def reformat(paragraphs, flag = "MARGINS") :
